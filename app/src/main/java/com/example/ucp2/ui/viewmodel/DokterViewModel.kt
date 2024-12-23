@@ -18,3 +18,11 @@ fun DokterEvent.toDokterEntity(): Dokter = Dokter(
     noHp = noHp,
     jamKerja = jamKerja
 )
+data class FormErrorState(
+    val id : String? = null,
+    val nama : String? = null,
+    val spesialis : String? = null,
+    val klinik : String? = null,
+    val noHp : String? = null,
+    val jamKerja : String? = null
+)
