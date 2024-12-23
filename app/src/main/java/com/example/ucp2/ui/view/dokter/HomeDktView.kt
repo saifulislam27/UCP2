@@ -2,6 +2,7 @@ package com.example.ucp2.ui.view.dokter
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -25,15 +28,19 @@ import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -41,9 +48,116 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ucp2.R
 import com.example.ucp2.data.entity.Dokter
+import com.example.ucp2.ui.costumwidget.TopAppBar
 import com.example.ucp2.ui.viewmodel.HomeDktUiState
+import com.example.ucp2.ui.viewmodel.HomeDktViewModel
+import com.example.ucp2.ui.viewmodel.PenyediaViewModel
 import kotlinx.coroutines.launch
+
+@Composable
+fun HomeDktView(
+    viewModel: HomeDktViewModel = viewModel(factory = PenyediaViewModel.Factory),
+    onAddDr: () -> Unit = { },
+    onAddJad: () -> Unit = { },
+    modifier: Modifier = Modifier
+) {
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            Column {
+                Header(
+                    namaApp = "Kesehatan MUH",
+                    ID = R.drawable.ferrari
+
+                )
+                TopAppBar(
+                    judul = "Daftar Dokter",
+                    showBackButton = false,
+                    onBack = { },
+                )
+            }
+        }
+    ) { innerPadding ->
+        val homeDrUiState by viewModel.homeDktUiState.collectAsState()
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
+                        .clickable { onAddDr() }
+                        .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                        .background(Color(0xFF708090), shape = RoundedCornerShape(8.dp))
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AccountBox,
+                            contentDescription = "Tambah Dokter Icon",
+                            modifier = Modifier.padding(end = 8.dp),
+                            tint = Color.White
+                        )
+                        Text(
+                            text = "Tambah Dokter",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = Color.White
+                        )
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
+                        .clickable { onAddJad() }
+                        .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                        .background(Color(0xFF708090), shape = RoundedCornerShape(8.dp))
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.DateRange,
+                            contentDescription = "Jadwal Icon",
+                            modifier = Modifier.padding(end = 8.dp),
+                            tint = Color.White
+                        )
+                        Text(
+                            text = "Jadwal Pasien",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
+
+            BodyHomeDkt(
+                homeDktUiState = homeDrUiState,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
 
 @Composable
 fun BodyHomeDkt(
