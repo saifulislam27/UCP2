@@ -15,4 +15,16 @@ interface AlamatNavigasi {
         const val id = "id"
         val routeWithArgs = "$route/{$id}"
     }
+
+    object DestinasiUpdateJdw : AlamatNavigasi {
+        override val route = "update"
+        const val id = "id"
+        val routeWithArgs = "$route/{$id}"
+    }
+
+    object DestinasiEditJdw : AlamatNavigasi {
+        override val route = "edit"
+        const val id = "id"
+        val routeWithArgs = "$route/{$id}"
+    }
 }
