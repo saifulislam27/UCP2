@@ -9,7 +9,7 @@ data class Dokter(
     val id: String,
     val nama: String,
     val spesialis: String,
+    val noHp: String,
     val klinik: String,
-    val nohp: String,
-    val jamPraktik : String
+    val jamKerja: String
 )
