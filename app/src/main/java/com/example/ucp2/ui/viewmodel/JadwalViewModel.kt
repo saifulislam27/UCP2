@@ -18,3 +18,20 @@ fun JadwalEvent.toJadwalEntity(): Jadwal = Jadwal(
     tanggalKonsultasi = tanggalKonsultasi,
     status = status
 )
+data class FormErrorJadwalState(
+    val id: String? = null,
+    val NamaDokter: String,
+    val NamaPasien: String,
+    val noHp: String? = null,
+    val tanggalKonsultasi: String? = null,
+    val status: String? = null
+){
+    fun isValid(): Boolean {
+        return id == null &&
+                NamaDokter == null &&
+                NamaPasien == null &&
+                noHp == null &&
+                tanggalKonsultasi == null &&
+                status == null
+    }
+}
