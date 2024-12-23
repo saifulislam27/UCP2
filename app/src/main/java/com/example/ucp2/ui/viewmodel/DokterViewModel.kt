@@ -4,8 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.ucp2.data.entity.Dokter
 import com.example.ucp2.repository.RepositoryDkt
+import kotlinx.coroutines.launch
 
 class DokterViewModel(
     private val repositoryDr: RepositoryDkt
@@ -30,6 +32,37 @@ class DokterViewModel(
         )
         DktUiState = DktUiState.copy(isEntryValid = errorState)
         return errorState.isValid()
+    }
+    fun saveData() {
+
+        val currentEvent = DktUiState.DokterEvent
+
+        if (validateFields()) {
+            viewModelScope.launch {
+                try {
+                    repositoryDr.insertDkt(currentEvent.toDokterEntity())
+                    DktUiState = DktUiState.copy(
+                        snackbarMessage = "Data berhasil disimpan",
+                        DokterEvent = DokterEvent(),
+                        isEntryValid = FormErrorState()
+                    )
+                } catch (e: Exception) {
+                    DktUiState = DktUiState.copy(
+                        snackbarMessage = "Data gagal disimpan"
+                    )
+                }
+            }
+        }else {
+            DktUiState = DktUiState.copy(
+                snackbarMessage = "Data tidak valid. Periksa kembali data Anda."
+            )
+        }
+    }
+    //reset pesan snackbar setelah ditampilkan
+    fun resetSnackBarMessage() {
+        DktUiState = DktUiState.copy(
+            snackbarMessage = null
+        )
     }
 }
 
