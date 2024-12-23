@@ -26,3 +26,13 @@ data class FormErrorState(
     val noHp : String? = null,
     val jamKerja : String? = null
 )
+{
+    fun isValid(): Boolean {
+        return id == null &&
+                nama == null &&
+                spesialis == null &&
+                klinik == null &&
+                noHp == null &&
+                jamKerja == null
+    }
+}
