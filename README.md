@@ -28,5 +28,5 @@ Hasil Delete Jadwal
 UPDATE (edit) Jadwal
 ![Screenshot 2024-12-24 175041](https://github.com/user-attachments/assets/23d0d2ea-fd74-4d83-ba09-eae6743d7ca9)
 
-Hasil UPDATE(edit) Jadwal
+Hasil UPDATE(edit) Jadwall
 ![Screenshot 2024-12-24 175052](https://github.com/user-attachments/assets/b062a657-80cd-4cee-ab06-bbf6341f80fd)
