@@ -58,7 +58,7 @@ class DokterViewModel(
             )
         }
     }
-    //reset pesan snackbar setelah ditampilkan
+
     fun resetSnackBarMessage() {
         DktUiState = DktUiState.copy(
             snackbarMessage = null
