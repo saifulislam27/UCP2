@@ -2,6 +2,7 @@ package com.example.ucp2.ui.view.dokter
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -166,6 +168,16 @@ fun BodyHomeDkt(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
+
+    // Common table background modifier without border
+    val tableBackgroundModifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)
+        .background(
+            color = Color(0xFF708090), // Light grey background color to resemble a table
+            shape = RoundedCornerShape(8.dp)
+        )
+
     when {
         homeDktUiState.isLoading -> {
             Box(
@@ -191,23 +203,57 @@ fun BodyHomeDkt(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "Tidak Ada Data Dokter",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(16.dp)
-                )
+                Surface(
+                    modifier = tableBackgroundModifier,
+                    color = Color.Transparent // No extra background color
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Tidak Ada Data Dokter",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                }
             }
         }
 
         else -> {
-            ListDokter(
-                listDkt = homeDktUiState.listDr,
-                modifier = modifier
-            )
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Surface(
+                    modifier = tableBackgroundModifier,
+                    color = Color.Transparent // Transparent background inside table
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        // Add "List Dokter" text
+                        Text(
+                            text = "List Dokter",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+
+                        // List of doctors
+                        ListDokter(
+                            listDkt = homeDktUiState.listDr,
+                            modifier = modifier
+                        )
+                    }
+                }
+            }
         }
     }
 }
+
 
 @Composable
 fun Header(
@@ -228,39 +274,55 @@ fun Header(
             )
             .padding(16.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Column {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = namaApp,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Icon(
-                        imageVector = Icons.Filled.ThumbUp,
-                        contentDescription = "ikon",
-                        tint = Color.White
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
-
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
-                    text = "Mari Hidup Sehat",
-                    fontSize = 14.sp,
-                    color = Color.White.copy(alpha = 0.8f)
+                    text = namaApp,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Icon(
+                    imageVector = Icons.Filled.ThumbUp,
+                    contentDescription = "ikon",
+                    tint = Color.White
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = "Mari Hidup Sehat",
+                fontSize = 14.sp,
+                color = Color.White.copy(alpha = 0.8f)
+            )
+
+            Column(
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(top = 8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "search",
+                    tint = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
+
+                Icon(
+                    imageVector = Icons.Filled.Person,
+                    contentDescription = "customer service",
+                    tint = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         }
 
         Box(
@@ -278,27 +340,6 @@ fun Header(
                     .clip(RoundedCornerShape(35.dp))
                     .align(Alignment.Center),
                 contentScale = ContentScale.Crop
-            )
-        }
-
-
-        Column(
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(bottom = 16.dp, start = 16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Search,
-                contentDescription = "search",
-                tint = Color.White
-            )
-
-            Icon(
-                imageVector = Icons.Filled.Person,
-                contentDescription = "customer service",
-                tint = Color.White
             )
         }
     }
