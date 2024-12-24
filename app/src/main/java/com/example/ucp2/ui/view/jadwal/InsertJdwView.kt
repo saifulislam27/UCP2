@@ -1,7 +1,10 @@
 package com.example.ucp2.ui.view.jadwal
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -11,14 +14,51 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ucp2.ui.costumwidget.DynamicSelectedTextField
+import com.example.ucp2.ui.navigation.AlamatNavigasi
 import com.example.ucp2.ui.viewmodel.FormErrorJadwalState
 import com.example.ucp2.ui.viewmodel.JadwalEvent
 import com.example.ucp2.ui.viewmodel.JadwalViewModel
+import com.example.ucp2.ui.viewmodel.JdwUiState
 import com.example.ucp2.ui.viewmodel.PenyediaViewModel
+
+@Composable
+fun InsertBodyJadwal(
+    modifier: Modifier = Modifier,
+    onValueChange: (JadwalEvent) -> Unit,
+    JdwState: JdwUiState,
+    onClick: () -> Unit
+){
+    Column  (
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        FormJadwal(
+            jadwalEvent = JdwState.JadwalEvent,
+            onValueChange = onValueChange,
+            errorJadwalState = JdwState.isEntryValid,
+            modifier = modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = onClick,
+            modifier = modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF708090)
+            )
+        ){
+            Text(text = "Simpan")
+        }
+    }
+}
+
+object DestinasiInsertJad: AlamatNavigasi {
+    override val route : String = "insert_Jad"
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
